@@ -1,6 +1,7 @@
 
 import { useState } from 'react';
 import './App.css';
+import { v4 as uuid } from 'uuid';
 
 const yapilacaklar = [
   {
@@ -19,6 +20,7 @@ const yapilacaklar = [
 function App() {
 
   const [isler,islerGuncelle] = useState(yapilacaklar)
+  const [inputBaslik,inputBaslikGuncelle] = useState("")
 
   const tamamlamaİslemi = (tiklananEleman)=> {
     islerGuncelle ( eskiDeger => 
@@ -33,9 +35,29 @@ function App() {
     )
   }
 
+  const YeniIsInput = (event)=> {
+    inputBaslikGuncelle(event.target.value)
+  }
+
+
+  function YeniIsEkle (){
+    const yeniIs = {
+      id:uuid(),
+      baslik:inputBaslik,
+      tamamlandi: false
+    }
+    islerGuncelle ( eskiDeger => [...eskiDeger,yeniIs] )
+    inputBaslikGuncelle("")
+    
+  }
 
   return (
    <>
+
+   <div>
+      <input value={inputBaslik} onChange={YeniIsInput} type='text' placeholder='Yeni İş Başlığı Girin' />
+      <button onClick={YeniIsEkle}> + Ekle </button>
+   </div>
    <h1>Yapılacaklar Listesi</h1>
     {isler.map( (eleman) => {
       return(
